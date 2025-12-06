@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Stellar Events — Event Management</title>
+  <meta name="description" content="Event management, bookings, and testimonials." />
+  <style>
+    :root{--accent:#FF6B6B;--muted:#6b7280;--bg:#f7f7fb}
+    *{box-sizing:border-box}
+    body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; margin:0; color:#111;background:var(--bg)}
+    .container{max-width:1100px;margin:0 auto;padding:28px}
+    header{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:52px;height:52px;border-radius:10px;background:linear-gradient(135deg,#ffb2b2,#ff6b6b);display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
+    nav a{margin-left:18px;color:var(--muted);text-decoration:none}
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;margin-top:18px}
+    .hero h1{font-size:34px;margin:0 0 12px}
+    .hero p{color:var(--muted);margin:0 0 18px}
+    .cta{display:inline-block;padding:12px 18px;background:var(--accent);color:white;border-radius:8px;text-decoration:none}
+    .card{background:white;border-radius:14px;padding:18px;box-shadow:0 6px 18px rgba(15,15,15,0.06)}
+
+    /* Event listings */
+    .events{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:18px}
+    .event-card{overflow:hidden;border-radius:12px}
+    .event-thumb{height:150px;background:linear-gradient(90deg,#f0f4ff,#e6f7f2);display:flex;align-items:center;justify-content:center;font-weight:700;color:#374151}
+    .event-body{padding:12px}
+    .event-meta{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin-top:6px}
+    .book-btn{margin-top:12px;display:inline-block;padding:8px 12px;border-radius:8px;border:1px solid #eee;text-decoration:none}
+
+    /* Testimonials */
+    .testimonials{display:flex;gap:12px;overflow:hidden}
+    .testimonial{min-width:260px}
+    .avatar{width:48px;height:48px;border-radius:999px;background:#ddd;display:inline-block}
+
+    /* Layout */
+    .two-col{display:grid;grid-template-columns:1fr 380px;gap:18px;margin-top:18px}
+    footer{margin-top:28px;padding:18px 0;color:var(--muted);text-align:center}
+
+    /* Modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(11,11,11,0.45);display:none;align-items:center;justify-content:center;padding:20px}
+    .modal{background:white;border-radius:12px;max-width:560px;width:100%;padding:18px}
+    .close-btn{background:#eee;border:0;padding:8px 10px;border-radius:8px}
+
+    /* Responsive */
+    @media (max-width:880px){.hero{grid-template-columns:1fr}.two-col{grid-template-columns:1fr}.container{padding:18px}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">SE</div>
+        <div>
+          <div style="font-weight:700">Stellar Events</div>
+          <div style="font-size:12px;color:var(--muted)">Memorable moments, expertly managed</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#events">Events</a>
+        <a href="#booking">Booking</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div>
+        <h1>Plan. Produce. Celebrate.</h1>
+        <p>Full-service event management for corporate conferences, weddings, product launches and private parties. We take the stress off your plate so you can enjoy the moment.</p>
+        <a class="cta" href="#booking" id="openBooking">Book an Event</a>
+
+        <div class="card" style="margin-top:18px">
+          <h3 style="margin:0 0 8px">Why clients choose us</h3>
+          <ul style="margin:0;color:var(--muted)">
+            <li>End-to-end management: concept → logistics → execution</li>
+            <li>Trusted vendor network & venue sourcing</li>
+            <li>Transparent pricing and on-site coordination</li>
+          </ul>
+        </div>
+      </div>
+
+      <aside>
+        <div class="card">
+          <h3 style="margin-top:0">Quick contact</h3>
+          <p style="color:var(--muted);margin:6px 0 12px">Tell us the type of event and your preferred date — we’ll get back with availability.</p>
+          <form id="quickContact">
+            <label style="display:block;font-size:13px">Name</label>
+            <input name="name" required style="width:100%;padding:8px;margin:6px 0 10px;border:1px solid #eee;border-radius:8px" />
+            <label style="display:block;font-size:13px">Phone / Email</label>
+            <input name="contact" required style="width:100%;padding:8px;margin:6px 0 10px;border:1px solid #eee;border-radius:8px" />
+            <label style="display:block;font-size:13px">Event type</label>
+            <select name="type" style="width:100%;padding:8px;margin:6px 0 12px;border:1px solid #eee;border-radius:8px">
+              <option>Wedding</option><option>Corporate</option><option>Private Party</option><option>Product Launch</option>
+            </select>
+            <button class="cta" type="submit" style="width:100%">Request callback</button>
+          </form>
+        </div>
+      </aside>
+    </section>
+
+    <section id="events" style="margin-top:20px">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <h2 style="margin:0">Upcoming Events</h2>
+        <div style="color:var(--muted);font-size:13px">Showing curated sample events</div>
+      </div>
+
+      <div class="events">
+        <div class="card event-card">
+          <div class="event-thumb">Corporate Summit — Nov 2025</div>
+          <div class="event-body">
+            <h3 style="margin:0">Leadership Summit</h3>
+            <div class="event-meta"><span>Venue: Grand Hall</span><span>Guests: 350</span></div>
+            <p style="color:var(--muted);margin-top:10px">Full AV, stage design, catering and guest management.</p>
+            <a class="book-btn" data-event="Leadership Summit">Book</a>
+          </div>
+        </div>
+
+        <div class="card event-card">
+          <div class="event-thumb">Wedding Showcase — Feb 2026</div>
+          <div class="event-body">
+            <h3 style="margin:0">Elegant Wedding</h3>
+            <div class="event-meta"><span>Venue: Lakeside</span><span>Guests: 180</span></div>
+            <p style="color:var(--muted);margin-top:10px">Design, floral, photography and day-of coordination.</p>
+            <a class="book-btn" data-event="Elegant Wedding">Book</a>
+          </div>
+        </div>
+
+        <div class="card event-card">
+          <div class="event-thumb">Product Launch — Jan 2026</div>
+          <div class="event-body">
+            <h3 style="margin:0">Product Launch</h3>
+            <div class="event-meta"><span>Venue: Rooftop Studio</span><span>Guests: 120</span></div>
+            <p style="color:var(--muted);margin-top:10px">Staging, lighting, live stream and PR support.</p>
+            <a class="book-btn" data-event="Product Launch">Book</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="two-col">
+      <section id="testimonials" class="card">
+        <h3 style="margin-top:0">What clients say</h3>
+        <div class="testimonials" id="testimonialsList">
+          <div class="testimonial card">
+            <div style="display:flex;gap:10px;align-items:center">
+              <div class="avatar"></div>
+              <div>
+                <strong>Riya Kapoor</strong>
+                <div style="font-size:13px;color:var(--muted)">Marketing Head, TechCo</div>
+              </div>
+            </div>
+            <p style="color:var(--muted);margin-top:10px">"Flawless execution. The team managed everything from vendors to timings — couldn’t have asked for more."</p>
+          </div>
+
+          <div class="testimonial card">
+            <div style="display:flex;gap:10px;align-items:center">
+              <div class="avatar"></div>
+              <div>
+                <strong>Ashish &amp; Kavya</strong>
+                <div style="font-size:13px;color:var(--muted)">Private clients</div>
+              </div>
+            </div>
+            <p style="color:var(--muted);margin-top:10px">"Our wedding was exactly how we imagined — even better. Calm, professional and deeply caring."</p>
+          </div>
+        </div>
+      </section>
+
+      <aside class="card" id="booking">
+        <h3 style="margin-top:0">Start your booking</h3>
+        <form id="bookingForm">
+          <label style="display:block;font-size:13px">Name</label>
+          <input name="name" required style="width:100%;padding:8px;margin:6px 0 10px;border:1px solid #eee;border-radius:8px" />
+          <label style="display:block;font-size:13px">Email</label>
+          <input name="email" type="email" required style="width:100%;padding:8px;margin:6px 0 10px;border:1px solid #eee;border-radius:8px" />
+          <label style="display:block;font-size:13px">Event Type</label>
+          <select name="type" style="width:100%;padding:8px;margin:6px 0 12px;border:1px solid #eee;border-radius:8px">
+            <option>Wedding</option><option>Corporate</option><option>Party</option>
+          </select>
+          <label style="display:block;font-size:13px">Preferred date</label>
+          <input name="date" type="date" style="width:100%;padding:8px;margin:6px 0 12px;border:1px solid #eee;border-radius:8px" />
+          <button class="cta" type="submit" style="width:100%">Send request</button>
+        </form>
+      </aside>
+    </div>
+
+    <section id="contact" style="margin-top:18px">
+      <div class="card">
+        <h3 style="margin-top:0">Contact & Location</h3>
+        <p style="color:var(--muted);margin:6px 0">Email: hello@stellarevents.example | Phone: +91-98765-43210</p>
+        <p style="color:var(--muted);margin:6px 0">Office: 12 Event Street, Mumbai</p>
+      </div>
+    </section>
+
+    <footer>
+      © <span id="year"></span> Stellar Events • Crafted with care
+    </footer>
+  </div>
+
+  <!-- Modal booking (re-usable) -->
+  <div class="modal-backdrop" id="modal">
+    <div class="modal card" role="dialog" aria-modal="true">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h3 style="margin:0">Request booking</h3>
+        <button class="close-btn" id="closeModal">Close</button>
+      </div>
+      <p style="color:var(--muted);margin-top:8px">Quick booking for: <strong id="modalEvent">—</strong></p>
+      <form id="modalForm">
+        <label style="display:block;font-size:13px">Name</label>
+        <input name="name" required style="width:100%;padding:8px;margin:6px 0 10px;border:1px solid #eee;border-radius:8px" />
+        <label style="display:block;font-size:13px">Contact</label>
+        <input name="contact" required style="width:100%;padding:8px;margin:6px 0 10px;border:1px solid #eee;border-radius:8px" />
+        <button class="cta" type="submit">Submit request</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // small interaction layer (no backend) — the forms show a toast and log to console
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    function openModal(eventName){
+      document.getElementById('modalEvent').textContent = eventName;
+      document.getElementById('modal').style.display = 'flex';
+    }
+    function closeModal(){document.getElementById('modal').style.display = 'none';}
+    document.getElementById('openBooking').addEventListener('click', function(e){e.preventDefault();openModal('Custom Event')});
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+    document.getElementById('modal').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
+
+    document.querySelectorAll('.book-btn').forEach(b=>b.addEventListener('click', function(e){openModal(this.dataset.event)}));
+
+    function handleSubmit(form){
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        const data = new FormData(form);
+        const obj = Object.fromEntries(data.entries());
+        console.log('Form submitted (client-only demo):', obj);
+        alert('Thanks — your request has been recorded. We will contact you shortly. (Demo)');
+        form.reset();
+        closeModal();
+      });
+    }
+    handleSubmit(document.getElementById('modalForm'));
+    handleSubmit(document.getElementById('bookingForm'));
+    handleSubmit(document.getElementById('quickContact'));
+  </script>
+</body>
+</html>
